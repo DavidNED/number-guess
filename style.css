@@ -40,6 +40,13 @@ main {
   align-items: center;
 }
 
+.middle {
+  width: 52rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .right {
   width: 52rem;
   font-size: 2rem;
@@ -93,6 +100,7 @@ h1 {
   text-align: center;
   display: block;
   margin-bottom: 3rem;
+  outline: 0;
 }
 
 .btn {
@@ -105,6 +113,11 @@ h1 {
   cursor: pointer;
 }
 
+.btn-submit {
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+}
+
 .btn:hover {
   background-color: #ccc;
 }
@@ -114,6 +127,26 @@ h1 {
   height: 3rem;
 }
 
+.message-error {
+  margin-top: 3rem;
+  height: 3rem;
+}
+
 .label-score {
   margin-bottom: 2rem;
+}
+
+.min-num,
+.max-num {
+  background: none;
+  border: 2px solid #eee;
+  font-family: inherit;
+  color: inherit;
+  font-size: 1rem;
+  padding: 1rem 0.3rem;
+  width: 15rem;
+  text-align: center;
+  display: block;
+  margin-bottom: 1.5rem;
+  outline: 0;
 }
