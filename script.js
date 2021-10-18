@@ -18,7 +18,7 @@ const state = {
   minNum: 1,
 };
 
-window.s = state;
+//window.s = state;
 
 // POINTS FOR 19-10:
 // 1. WHEN FILLING IN 20 AT MAX AND 30 AT MIN, SECRETNUMBER IS STILL UPDATED
