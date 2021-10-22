@@ -19,7 +19,7 @@ const state = {
   playing: true,
 };
 
-// window.s = state;
+window.s = state;
 
 //------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ const checkMaxGreater = function (negativeVal = false) {
 
 const checkGuessNumber = function () {
   const val = +guess.value;
-
+  console.log(val);
   if (val > state.maxNum || val < state.minNum) {
     message.textContent = `Number range is ${state.minNum}-${state.maxNum}.`;
     return;
@@ -215,6 +215,9 @@ const init = function () {
 
 // Event listeners
 btnCheck.addEventListener('click', checkGuessNumber);
+guess.addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') checkGuessNumber();
+});
 
 const elements = [minNum, maxNum];
 elements.forEach(element =>
@@ -226,7 +229,7 @@ elements.forEach(element =>
 
 btnSumbit.addEventListener('click', function () {
   state.playing = true;
-  checkInputFields;
+  checkInputFields();
 });
 btnAgain.addEventListener('click', function () {
   setValuesToDefault();
