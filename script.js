@@ -80,7 +80,6 @@ const checkMaxGreater = function (negativeVal = false) {
 
 const checkGuessNumber = function () {
   const val = +guess.value;
-  console.log(val);
   if (val > state.maxNum || val < state.minNum) {
     message.textContent = `Number range is ${state.minNum}-${state.maxNum}.`;
     return;
