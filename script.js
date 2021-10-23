@@ -19,8 +19,6 @@ const state = {
   playing: true,
 };
 
-window.s = state;
-
 //------------------------------------------------------------------
 
 const setValuesToNewGame = function () {
