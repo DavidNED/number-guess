@@ -78,13 +78,7 @@ const checkMaxGreater = function (negativeVal = false) {
   }
 };
 
-const checkGuessNumber = function () {
-  const val = +guess.value;
-  if (val > state.maxNum || val < state.minNum) {
-    message.textContent = `Number range is ${state.minNum}-${state.maxNum}.`;
-    return;
-  }
-
+const compareGuessNumWithSecretNum = function (val) {
   if (val > state.secretNum) {
     state.score--;
     message.textContent = 'Too high';
@@ -108,7 +102,31 @@ const checkGuessNumber = function () {
   }
 };
 
-const checkInputFields = function () {
+const checkGuessNumber = function () {
+  const val = +guess.value;
+  // With only negative values, things work different with comparing (other way around)
+  if (state.maxNum < 0 && state.minNum < 0) {
+    if (val < state.maxNum || val > state.minNum) {
+      message.textContent = `Number range is ${state.minNum}-${state.maxNum}.`;
+      return;
+    }
+    compareGuessNumWithSecretNum(val);
+  }
+
+  // Below is for positive values
+  if (
+    (state.maxNum > 0 && state.minNum > 0) ||
+    (state.maxNum > 0 && state.minNum < 0)
+  ) {
+    if (val > state.maxNum || val < state.minNum) {
+      message.textContent = `Number range is ${state.minNum}-${state.maxNum}.`;
+      return;
+    }
+    compareGuessNumWithSecretNum(val);
+  }
+};
+
+const checkMinandMaxFields = function () {
   // Set borders back to default - when user filled in one field before instead of two the border was red
   minNum.style.border = '2px solid #eee';
   maxNum.style.border = '2px solid #eee';
@@ -117,8 +135,16 @@ const checkInputFields = function () {
   const maxNumVal = maxNum.value;
   const minNumVal = minNum.value;
 
+  // If not a number, return immediately
+  if (!isFinite(minNumVal) || !isFinite(maxNumVal)) {
+    messageError.textContent = 'Only numbers as input are valid.';
+    clearInputFields();
+    createSetTimeout();
+    return;
+  }
+
   // When both fields are filled in, move on to init() function
-  if (maxNumVal !== '' || minNumVal !== '') {
+  if (maxNumVal !== '' && minNumVal !== '') {
     state.maxNum = +maxNumVal;
     state.minNum = +minNumVal;
   }
@@ -145,6 +171,7 @@ const init = function () {
   if (state.maxNum === state.minNum) {
     messageError.textContent = "Numbers can't be the same.";
     createSetTimeout();
+    clearInputFields();
     setValuesToDefault();
     return;
   }
@@ -201,7 +228,7 @@ const init = function () {
     // In this case -20 is excluded and -1 is included
     let num = Math.trunc(Math.random() * state.maxNum) + 1;
     if (num <= Math.abs(state.minNum)) {
-      num *= Math.round() > 0.5 ? 1 : -1;
+      num *= Math.random() > 0.5 ? 1 : -1;
     }
     state.secretNum = num;
 
@@ -222,13 +249,13 @@ const elements = [minNum, maxNum];
 elements.forEach(element =>
   element.addEventListener('keypress', function (e) {
     state.playing = true;
-    if (e.key === 'Enter') checkInputFields();
+    if (e.key === 'Enter') checkMinandMaxFields();
   })
 );
 
 btnSumbit.addEventListener('click', function () {
   state.playing = true;
-  checkInputFields();
+  checkMinandMaxFields();
 });
 btnAgain.addEventListener('click', function () {
   setValuesToDefault();
