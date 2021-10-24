@@ -19,6 +19,8 @@ const state = {
   playing: true,
 };
 
+window.s = state;
+
 //------------------------------------------------------------------
 
 const setValuesToNewGame = function () {
@@ -31,7 +33,7 @@ const setValuesToNewGame = function () {
 const setValuesToDefault = function () {
   state.maxNum = 20;
   state.minNum = 1;
-  state.secretNum = 0;
+  state.secretNum = createPositiveRandomNumber(); // Create random number between 1 and 20
   state.score = 20;
   state.playing = true;
   scoreLabel.textContent = '20';
@@ -68,7 +70,7 @@ const checkMaxGreater = function (negativeVal = false) {
 
   if (condition) {
     messageError.textContent =
-      "Minimum number can't be higher than maximum number.";
+      "Minimum number can't be higher than maximum number. Random number created between 1-20.";
 
     createSetTimeout();
 
@@ -135,9 +137,11 @@ const checkMinandMaxFields = function () {
 
   // If not a number, return immediately
   if (!isFinite(minNumVal) || !isFinite(maxNumVal)) {
-    messageError.textContent = 'Only numbers as input are valid.';
+    messageError.textContent =
+      'Only numbers as input are valid. Random number created between 1-20.';
     clearInputFields();
     createSetTimeout();
+    setValuesToDefault();
     return;
   }
 
@@ -153,9 +157,12 @@ const checkMinandMaxFields = function () {
       ? (minNum.style.border = '2px solid #C02B0B')
       : (maxNum.style.border = '2px solid #C02B0B');
 
-    // Set back to 20 and 1 (in this case either one of them is set to 0 because of line 51 and 52)
+    // Set back to 20 and 1 and clear input fields
+    messageError.textContent =
+      'Please fill in both fields. Random number created between 1-20.';
+    clearInputFields();
+    createSetTimeout();
     setValuesToDefault();
-
     return;
   }
 
@@ -167,7 +174,19 @@ const checkMinandMaxFields = function () {
 const init = function () {
   // Return when both values are the same
   if (state.maxNum === state.minNum) {
-    messageError.textContent = "Numbers can't be the same.";
+    messageError.textContent =
+      "Numbers can't be the same. Random number created between 1-20.";
+    createSetTimeout();
+    clearInputFields();
+    setValuesToDefault();
+    return;
+  }
+
+  // When difference between max. and min. is only 1 (e.g. 1-0, 2-1, 3-2 etc.).
+  // Random number range will always be 1 which is unwanted.
+  if (state.maxNum - state.minNum === 1 || state.maxNum - state.minNum === -1) {
+    messageError.textContent =
+      'Please use wider range. Random number created between 1-20.';
     createSetTimeout();
     clearInputFields();
     setValuesToDefault();
