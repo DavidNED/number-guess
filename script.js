@@ -170,6 +170,7 @@ const checkMinandMaxFields = function () {
 //------------------------------------------------------------------
 
 const init = function () {
+  console.log('Hallo');
   // Return when both values are the same
   if (state.maxNum === state.minNum) {
     messageError.textContent =
