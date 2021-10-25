@@ -19,8 +19,6 @@ const state = {
   playing: true,
 };
 
-window.s = state;
-
 //------------------------------------------------------------------
 
 const setValuesToNewGame = function () {
@@ -182,9 +180,18 @@ const init = function () {
     return;
   }
 
-  // When difference between max. and min. is only 1 (e.g. 1-0, 2-1, 3-2 etc.).
-  // Random number range will always be 1 which is unwanted.
+  // When max. is 0 and min. is > 1
+  if (state.maxNum === 0 && state.minNum > 1) {
+    messageError.textContent =
+      "Minimum number can't be higher than maximum number. Random number created between 1-20.";
+    createSetTimeout();
+    clearInputFields();
+    setValuesToDefault();
+    return;
+  }
   if (state.maxNum - state.minNum === 1 || state.maxNum - state.minNum === -1) {
+    // When difference between max. and min. is only 1 (e.g. 1-0, 2-1, 3-2 etc.).
+    // Random number range will always be 1 which is unwanted.
     messageError.textContent =
       'Please use wider range. Random number created between 1-20.';
     createSetTimeout();
